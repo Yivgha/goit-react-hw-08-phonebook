@@ -6,12 +6,11 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import contactsOperations from 'redux/contacts/contacts-operations';
 import { getContacts } from 'redux/contacts/contacts-selectors';
-
 export function ContactsPage() {
-    const dispatch = useDispatch();
-    const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
-   useEffect(() => {
+  useEffect(() => {
     const asyncFn = async () => {
       dispatch(contactsOperations.fetchContacts());
     };
@@ -27,9 +26,9 @@ export function ContactsPage() {
         </>
       ) : (
         <Typography component={'span'} variant={'body2'}>
-          YYou don't have any contact yet
+          You doesn't have any contacts yet
         </Typography>
       )}
     </>
   );
-};
+}

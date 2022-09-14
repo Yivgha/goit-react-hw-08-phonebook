@@ -1,9 +1,9 @@
 import { VscTrash } from 'react-icons/vsc';
 import {
-  ListContacts,
-  ItemContacts,
-  TextContacts,
   DeleteBtn,
+  ItemContacts,
+  ListContacts,
+  TextContacts,
 } from './Contacts.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFilteredContacts } from 'redux/contacts/contacts-selectors';
@@ -15,16 +15,21 @@ export function Contacts() {
 
   return (
     <ListContacts>
-      {filteredContacts.map(({ id, name, phone }) => (
+      {filteredContacts.map(({ id, name, number }) => (
         <ItemContacts key={id}>
           <TextContacts>
-            {name}: {phone}
+            {name} : {number}
           </TextContacts>
-          <DeleteBtn type="button" onClick={() => dispatch(contactsOperations.deleteContact(id))}>
+          <DeleteBtn
+            type="button"
+            onClick={() => {
+              dispatch(contactsOperations.deleteContact(id));
+            }}
+          >
             <VscTrash />
           </DeleteBtn>
         </ItemContacts>
       ))}
     </ListContacts>
   );
-};
+}

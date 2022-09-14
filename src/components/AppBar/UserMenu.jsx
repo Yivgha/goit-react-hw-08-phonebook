@@ -6,14 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authOperation, authSelectors } from 'redux/auth';
 
 export function UserMenu() {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const name = useSelector(authSelectors.getUsername);
+  return (
+    <Stack direction="row">
+      <Chip
+        icon={<FaceIcon />}
+        label={name}
+        variant="outlined"
+        sx={{ my: 2 }}
+      />
 
-    const name = useSelector(authSelectors.getUserName);
-
-    return (
-        <Stack sirection="row">
-            <Chip icon={<FaceIcon />} label={name} variant="outlined" sx={{ my: 2 }} />
-            <Button variant='outlined' sx={{ my: 1.8, mx: 1.5 }} onClick={() => dispatch(authOperation.logOut())}>Log Out</Button>
-        </Stack>
-    );
-};
+      <Button
+        variant="outlined"
+        sx={{ my: 1.8, mx: 1.5 }}
+        onClick={() => dispatch(authOperation.logOut())}
+      >
+        LogOut
+      </Button>
+    </Stack>
+  );
+}

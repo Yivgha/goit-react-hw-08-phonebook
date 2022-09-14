@@ -9,7 +9,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import contactsOperations from 'redux/contacts/contacts-operations';
 import { getContacts } from 'redux/contacts/contacts-selectors';
-import { Notify } from 'notiflix';
 
 const theme = createTheme();
 
@@ -27,14 +26,16 @@ export function Form() {
 
   const onSubmit = data => {
     const { name, number } = data;
-    const isContact = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
+    const isContact = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
 
     if (!isContact) {
       dispatch(contactsOperations.addContact({ name, number }));
       reset({ data });
       return;
     }
-    Notify.alert(`${name} is already in contacts`);
+    alert(`${name} is already in contacts`);
     reset({ data });
   };
 
@@ -42,34 +43,70 @@ export function Form() {
     <ThemeProvider theme={theme}>
       <Box component="div" maxWidth="xs">
         <CssBaseline />
-        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <Typography component="h1" variant="h5">
             ADD CONTACT FORM
           </Typography>
-          <Box component='form' onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}>
-            <Controller control={control} rules={nameValidate} name="name" defaultValue="" render={({ field }) => (
-              <TextField
-                autoFocus autoComplete="off" label="Name"
-                onChange={e => field.onChange(e)}
-                value={field.value || ''}
-                error={!!errors.name?.message}
-                helperText={errors.name?.message}
-                margin="normal"
-                sx={{ maxWidth: '350px' }}
-              />)}
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
+          >
+            <Controller
+              control={control}
+              rules={nameValidate}
+              name="name"
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  autoFocus
+                  autoComplete="off"
+                  label="Name"
+                  onChange={e => field.onChange(e)}
+                  value={field.value || ''}
+                  error={!!errors.name?.message}
+                  helperText={errors.name?.message}
+                  margin="normal"
+                  sx={{ maxWidth: '350px' }}
+                />
+              )}
             />
-            <Controller control={control} name="number" rules={numberValidate} render={({ field }) => (
-              <TextField type="tel" label="Number" autoFocus autoComplete='off' defaultValue=''
-                onChange={e => field.onChange(e)}
-                value={field.value || ''}
-                error={!!errors.name?.message}
-                helperText={errors.number?.message}
-              sx={{ maxWidth: '350px' }}/>
-            )} />
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, maxWidth: '150px' }}>Add Contact</Button>
+            <Controller
+              control={control}
+              name="number"
+              rules={numberValidate}
+              render={({ field }) => (
+                <TextField
+                  type="tel"
+                  label="Number"
+                  autoFocus
+                  autoComplete="off"
+                  defaultValue=""
+                  onChange={e => field.onChange(e)}
+                  value={field.value || ''}
+                  error={!!errors.number?.message}
+                  helperText={errors.number?.message}
+                  sx={{ maxWidth: '350px' }}
+                />
+              )}
+            />
+
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2, maxWidth: '150px' }}
+            >
+              Add contact
+            </Button>
           </Box>
         </Box>
       </Box>
     </ThemeProvider>
   );
-};
+}
