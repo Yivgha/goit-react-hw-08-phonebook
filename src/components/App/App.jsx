@@ -1,20 +1,34 @@
-import { Form } from 'components/Form';
-import { Contacts } from 'components/Contacts';
-import { Filter } from 'components/Filter';
-import { useGetContactsQuery } from '../../redux/contactsSlice';
-import { Container, MainTitle, Title } from './App.styled';
+import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react';
+import { Container } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { authOperation } from 'redux/auth';
+import { BarMenu } from '../AppBar/BarMenu';
+import { PrivateRoute } from '../Routes/PrivateRoute';
+import { PublicRoute } from '../Routes/PublicRoute';
 
-export function App() {
+const HomePage = lazy(() => import('../../pages/HomePage').then(module => ({ default: module.HomePage })));
+const ContactsPage = lazy(() => import('../../pages/ContactsPage').then(module => ({ default: module.ContactsPage })));
+const LoginPage = lazy(() => import('../../pages/LoginPage').then(module => ({ default: module.LoginPage })));
+const RegisterPage = lazy(() => import('../../pages/RegisterPage').then(module => ({ default: module.RegisterPage })));
 
-  const { status, data } = useGetContactsQuery();
+export const App = () => {
+  const dispatch = useDispatch();
 
-    return (
-      <Container>
-        <MainTitle>Phone book</MainTitle>
-        <Form />
-        {status === 'fulfilled' && data.length !== 0 && <Title>Contacts</Title>}
-        {status === 'fulfilled' && data.length !== 0 && <Filter />}
-        <Contacts />
-      </Container>
-    );
+  useEffect(() => { dispatch(authOperation.fetchCurrentUser()) }, [dispatch]);
+
+  return (
+    <Container maxwidth="xl">
+      <Routes>
+        <Route path="/" element={<BarMenu />}>
+          <Route index element={<PublicRoute><HomePage/></PublicRoute>} />
+          <Route path="contacts" element={<PrivateRoute><ContactsPage/></PrivateRoute>} />
+          <Route path="register" element={<PublicRoute><RegisterPage/></PublicRoute>} />
+          <Route path="login" element={<PublicRoute><LoginPage/></PublicRoute>} />
+          <Route path="*" element={<ContactsPage />} />
+        </Route>
+      </Routes>
+    </Container>
+  );
 };

@@ -1,85 +1,75 @@
-import { useState } from 'react';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { FormContact, Label, InputContact, ButtonContact } from './Form.styled';
-import {
-  useAddContactMutation,
-  useGetContactsQuery,
-} from 'redux/contactsSlice';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { nameValidate, numberValidate } from 'helpers';
+import { Controller, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import contactsOperations from 'redux/contacts/contacts-operations';
+import { getContacts } from 'redux/contacts/contacts-selectors';
+import { Notify } from 'notiflix';
+
+const theme = createTheme();
 
 export function Form() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
 
-  const { data: contacts } = useGetContactsQuery();
-  
-  const [addContact] = useAddContactMutation();
+  const dispatch = useDispatch();
 
-  const handelInputChange = e => {
-    const name = e.currentTarget.name;
-    const value = e.currentTarget.value;
+  const contacts = useSelector(getContacts);
 
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        throw new Error();
-    }
-  };
-  
-  const onSubmitForm = e => {
-    e.preventDefault();
+  const onSubmit = data => {
+    const { name, number } = data;
+    const isContact = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
 
-    const isContact = contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
-    );
-
-   if (!isContact) {
-      addContact({ name, number });
-      reset();
+    if (!isContact) {
+      dispatch(contactsOperations.addContact({ name, number }));
+      reset({ data });
       return;
     }
-
-    const notify = () => Notify.failure(`${name} is already in contacts`);
-    notify();    
+    Notify.alert(`${name} is already in contacts`);
+    reset({ data });
   };
 
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
-
-    return (
-      <FormContact onSubmit={onSubmitForm}>
-        <Label>
-          Name
-          <InputContact
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            value={name}
-            onChange={handelInputChange}
-          />
-        </Label>
-        <Label>
-          Num
-          <InputContact
-            type="tel"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            value={number}
-            onChange={handelInputChange}
-          />
-        </Label>
-
-        <ButtonContact type="submit">Add contact</ButtonContact>
-      </FormContact>
-    );
+  return (
+    <ThemeProvider theme={theme}>
+      <Box component="div" maxWidth="xs">
+        <CssBaseline />
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
+          <Typography component="h1" variant="h5">
+            ADD CONTACT FORM
+          </Typography>
+          <Box component='form' onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}>
+            <Controller control={control} rules={nameValidate} name="name" defaultValue="" render={({ field }) => (
+              <TextField
+                autoFocus autoComplete="off" label="Name"
+                onChange={e => field.onChange(e)}
+                value={field.value || ''}
+                error={!!errors.name?.message}
+                helperText={errors.name?.message}
+                margin="normal"
+                sx={{ maxWidth: '350px' }}
+              />)}
+            />
+            <Controller control={control} name="number" rules={numberValidate} render={({ field }) => (
+              <TextField type="tel" label="Number" autoFocus autoComplete='off' defaultValue=''
+                onChange={e => field.onChange(e)}
+                value={field.value || ''}
+                error={!!errors.name?.message}
+                helperText={errors.number?.message}
+              sx={{ maxWidth: '350px' }}/>
+            )} />
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, maxWidth: '150px' }}>Add Contact</Button>
+          </Box>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
 };
