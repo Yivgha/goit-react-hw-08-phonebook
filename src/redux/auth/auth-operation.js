@@ -43,6 +43,8 @@ const logOut = createAsyncThunk('auth/logout', async () => {
   }
 });
 
+
+
 const fetchCurrentUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
@@ -59,9 +61,11 @@ const fetchCurrentUser = createAsyncThunk(
       return data;
     } catch (error) {
       toast.error('Error');
+      console.log(error.message);
     }
   }
 );
+
 const authOperation = {
   register,
   logOut,
