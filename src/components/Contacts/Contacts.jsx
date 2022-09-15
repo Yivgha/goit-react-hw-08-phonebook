@@ -1,4 +1,4 @@
-import { VscTrash } from 'react-icons/vsc';
+import { HiOutlineTrash } from 'react-icons/hi';
 import {
   DeleteBtn,
   ItemContacts,
@@ -26,7 +26,7 @@ export function Contacts() {
               dispatch(contactsOperations.deleteContact(id));
             }}
           >
-            <VscTrash />
+            <HiOutlineTrash />
           </DeleteBtn>
         </ItemContacts>
       ))}

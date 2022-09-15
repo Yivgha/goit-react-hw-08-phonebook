@@ -23,7 +23,7 @@ export function HomePage() {
         }}
       >
         <Link component={RouterLink} to="/register" variant="body2">
-          TRY WHITH ME
+          OPEN YOUR CONTACTS
         </Link>
       </Typography>
       <Image src={phoneImg} alt="phone" />

@@ -5,7 +5,6 @@ export const ListContacts = styled.ul``;
 
 export const ItemContacts = styled.li`
   display: flex;
-  // gap: 15px;
   align-items: baseline;
   justify-content: space-between;
   padding: 10px;
@@ -23,10 +22,16 @@ export const TextContacts = styled.p`
 `;
 
 export const DeleteBtn = styled.button`
-  font-size: 18px;
-   transition: all 0.3s ease;
+  font-size: 17px;
+  color: ${theme.colors.orange};
+  background-color: ${theme.colors.light};
+  border-radius: 5px;
+  border: 1px solid ${theme.colors.dark};
+  transition: all 0.3s ease;
+ 
   &:hover {
   box-shadow: ${theme.shadow};
- font-size:20px;
-  border-radius: 5px;
+  font-size:20px;
+  color: ${theme.colors.accent};
+  background-color: ${theme.colors.light};
 `;

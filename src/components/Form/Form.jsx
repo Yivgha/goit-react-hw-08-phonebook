@@ -51,18 +51,17 @@ export function Form() {
           }}
         >
           <Typography component="h1" variant="h5">
-            ADD CONTACT FORM
+            ADD NEW CONTACT
           </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
+            sx={{ mt: 1, display: 'flex', flexDirection: 'column' }}
           >
             <Controller
               control={control}
               rules={nameValidate}
               name="name"
-              defaultValue=""
               render={({ field }) => (
                 <TextField
                   autoFocus
@@ -87,7 +86,6 @@ export function Form() {
                   label="Number"
                   autoFocus
                   autoComplete="off"
-                  defaultValue=""
                   onChange={e => field.onChange(e)}
                   value={field.value || ''}
                   error={!!errors.number?.message}

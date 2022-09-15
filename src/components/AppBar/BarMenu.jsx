@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import { Container, Stack } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -103,7 +103,7 @@ export function BarMenu(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <MenuBookIcon />
+            <PhoneInTalkIcon />
           </Typography>
 
           <Box

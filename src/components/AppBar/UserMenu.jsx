@@ -1,4 +1,4 @@
-import FaceIcon from '@mui/icons-material/Face';
+import { VscOctoface } from 'react-icons/vsc';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
@@ -11,7 +11,7 @@ export function UserMenu() {
   return (
     <Stack direction="row">
       <Chip
-        icon={<FaceIcon />}
+        icon={<VscOctoface fontSize="large" color="orange" />}
         label={name}
         variant="outlined"
         sx={{ my: 2 }}
