@@ -7,6 +7,7 @@ import { authOperation } from 'redux/auth';
 import { BarMenu } from '../AppBar/BarMenu';
 import { PrivateRoute } from '../Routes/PrivateRoute';
 import { PublicRoute } from '../Routes/PublicRoute';
+
 const HomePage = lazy(() =>
   import('../../pages/HomePage').then(module => ({ default: module.HomePage }))
 );
